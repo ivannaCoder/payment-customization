@@ -1,0 +1,18 @@
+query CartPaymentMethodsTransformRunInput {
+  cart {
+    deliveryGroups {
+      deliveryOptions {
+        handle
+        title
+      }
+      selectedDeliveryOption {
+        handle
+        title
+      }
+    }
+  }
+  paymentMethods {
+    id
+    name
+  }
+}
