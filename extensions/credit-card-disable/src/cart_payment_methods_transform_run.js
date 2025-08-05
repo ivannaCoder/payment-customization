@@ -21,7 +21,7 @@ const NO_CHANGES = {
 
 
 export function cartPaymentMethodsTransformRun(input) {
-  const TARGET_LOCATION = 'california';
+  const TARGET_LOCATION = '35-אילת';
 
   const hasCaliforniaDelivery = input.cart.deliveryGroups.some(group => {
     const selected = group.selectedDeliveryOption;
@@ -34,7 +34,7 @@ export function cartPaymentMethodsTransformRun(input) {
 
   // Find the payment method to hide
   const hidePaymentMethod = input.paymentMethods
-  .find(method => method.name.includes("Cash on Delivery"));
+  .find(method => method.name.includes("כרטיס אשראי ואמצעי תשלום נוספים"));
 
    if (!hidePaymentMethod) {
     return NO_CHANGES;
