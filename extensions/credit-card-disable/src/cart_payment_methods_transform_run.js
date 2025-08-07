@@ -28,23 +28,35 @@ export function cartPaymentMethodsTransformRun(input) {
     return selected && selected.title && selected.title.toLowerCase().includes(TARGET_LOCATION);
   });
 
+  const deferredPaymentMethod = input.paymentMethods
+  .find(method => method.name.includes("תיאום תשלום מול נציג - סניף אילת"));
+
   if (!hasCaliforniaDelivery) {
-    return NO_CHANGES;
+    if (deferredPaymentMethod && deferredPaymentMethod.id) {
+      return {
+        operations: [{
+          paymentMethodHide: {
+            paymentMethodId: deferredPaymentMethod.id
+          }
+        }]
+      };
+    } else {
+      return NO_CHANGES;
+    }
+  } else {
+    const hidePaymentMethod = input.paymentMethods
+    .find(method => method.name.includes("כרטיס אשראי ואמצעי תשלום נוספים"));
+
+    if (!hidePaymentMethod) {
+      return NO_CHANGES;
+    }
+
+    return {
+      operations: [{
+        paymentMethodHide: {
+          paymentMethodId: hidePaymentMethod.id
+        }
+      }]
+    };
   }
-
-  // Find the payment method to hide
-  const hidePaymentMethod = input.paymentMethods
-  .find(method => method.name.includes("כרטיס אשראי ואמצעי תשלום נוספים"));
-
-   if (!hidePaymentMethod) {
-    return NO_CHANGES;
-  }
-
-  return {
-    operations: [{
-      paymentMethodHide: {
-        paymentMethodId: hidePaymentMethod.id
-      }
-    }]
-  };
 }
